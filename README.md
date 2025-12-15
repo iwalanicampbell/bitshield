@@ -67,6 +67,50 @@ docker/run-in-docker.sh <command>
 
 ## Usage
 
+### Bridging from External Backdoor Models (ONNX Export)
+
+If you already have a backdoored PyTorch model from another project, you can
+export it to ONNX in the layout expected by BitShield using
+tools/export_backdoor_to_onnx.py. This is the recommended entry point when
+integrating BitShield with an existing backdoor pipeline.
+
+1. Make sure your Python environment has PyTorch and torchvision installed
+	 (these are already part of the standard BitShield setup).
+2. Identify the following for your backdoored model:
+	 - The `.pth` checkpoint file path.
+	 - The dataset name (e.g. `CIFAR10`, `CIFAR100`, `GTSRB`).
+	 - The backbone type used by your training code (one of `resnet`, `vgg`,
+		 `preactresnet`).
+	 - The BitShield model name you want to use (for consistency with the rest
+		 of the pipeline we typically use names starting with `Q`, e.g.
+		 `QresnetBD`).
+	 - The quantization setting (`int4` or `int8`) that matches how the model
+		 was trained/saved.
+3. Run the export script, for example:
+
+	 ```sh
+	 python tools/export_backdoor_to_onnx.py \
+		 --pth-path /path/to/backdoor_model.pth \
+		 --model-name QresnetBD \
+		 --dataset CIFAR10 \
+		 --backbone resnet \
+		 --quantization int8 \
+		 --batch-size 32 \
+		 --image-size 32 \
+		 --output-root models
+	 ```
+
+	 This will produce an ONNX file at
+	 models/<DATASET>/<MODEL_NAME>/<MODEL_NAME>-<BATCH>.onnx, e.g.
+	 models/CIFAR10/QresnetBD/QresnetBD-32.onnx. This path is the standard
+	 layout expected by cfg.models_dir and the BitShield build scripts.
+
+Once the ONNX file is in place, you can treat the backdoored model like any
+other BitShield model: add the corresponding configuration in cfg.py (if
+needed), run dvc repro to build binaries and generate analysis, and then use
+flipsweep.py and the tools/ scripts (such as catastrophic_stats.py and
+defence_stats.py) to evaluate vulnerability and protection.
+
 ### Adding New Datasets and Editing Models
 
 Usually dataset files live in `datasets/`, as configured in `cfg.py`. If your
