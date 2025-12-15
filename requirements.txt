@@ -185,7 +185,11 @@ py4j==0.10.9.3
 pyarrow==13.0.0
 pyasn1==0.4.8
 pyasn1-modules==0.2.8
-pycocotools==2.0.5
+## pycocotools==2.0.5
+## Commented out: building wheels for pycocotools can fail
+## on some platforms/environments, and BitShield does not
+## import it anywhere in this repo. If you need COCO tools
+## later, install it manually in your environment.
 pycparser==2.21
 pydantic==1.10.12
 pydot==1.4.2

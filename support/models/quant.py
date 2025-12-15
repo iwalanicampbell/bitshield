@@ -25,9 +25,13 @@ parser.add_argument("--quant-format",
                     type=QuantFormat.from_string,
                     choices=list(QuantFormat))
 parser.add_argument("--per-channel", default=False, type=bool)
-parser.add_argument('--image-size', default=32)
-parser.add_argument('--batch-size', default=cfg.batch_size)
+parser.add_argument('--image-size', type=int, default=32)
+parser.add_argument('--batch-size', type=int, default=cfg.batch_size)
 args = parser.parse_args()
+
+# Extra safety, even if argparse types were wrong
+args.image_size = int(args.image_size)
+args.batch_size = int(args.batch_size)
 
 
 class DataReader(CalibrationDataReader):

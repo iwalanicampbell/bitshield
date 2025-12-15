@@ -73,6 +73,8 @@ def find_cig_spots():
 
 def main():
     spots = find_cig_spots()
-    utils.save_json(spots, f'cig-spots.json')
+    # NOTE: This script runs under Ghidra's Jython environment, which does
+    # not support Python 3 f-strings. Use a plain string literal instead.
+    utils.save_json(spots, 'cig-spots.json')
 
 main()

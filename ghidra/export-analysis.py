@@ -5,7 +5,9 @@ import os
 import struct
 import utils
 
-outfile = f'./ghidra/analysis/{utils.currentProgram().getName()}-analysis.json'
+outfile = './ghidra/analysis/{}-analysis.json'.format(
+    utils.currentProgram().getName()
+)
 
 def export_fn(f):
     return {
@@ -63,6 +65,6 @@ def export_analysis():
     }
 
     utils.save_json(ret, outfile)
-    print(f'Output written to {os.path.abspath(outfile)}')
+    print('Output written to {}'.format(os.path.abspath(outfile)))
 
 export_analysis()

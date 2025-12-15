@@ -76,3 +76,9 @@ wandb/
 !.dvc
 !dvc.lock
 !.merge_file_*
+
+# Ghidra tool distributions and related bundles
+ghidra/ghidra_*/
+ghidra/gradle-*/
+ghidra/ghidrathon/
+ghidra/ghidra.zip
