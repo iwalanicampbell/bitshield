@@ -192,12 +192,7 @@ run `dvc checkout` later, the new file may get **deleted**.
 ### Reproducing Experiments
 
 Once prior steps are done, you can reproduce the experiments in the paper by
-running
+compiling your quantized models with protected and unprotected status and then do the flipsweep.py to find malicious bits and finally analyze with catastrophic_stats.py 
 
-```sh
-tools/runattacksim.sh
-```
 
-which will run the attack simulation on all the models and datasets.
-The results will be available in `results/`. Note that if you run `dvc
-checkout` later, the new files may get **deleted**.
+
